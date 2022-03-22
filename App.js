@@ -5,7 +5,7 @@ import {  Text, View, TextInput, Button, ScrollView } from 'react-native';
 import styles from './Styles'
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const notes = [
+let notes = [
   {
     id: 1,
     content: 'HTML on helppoa',
@@ -26,28 +26,56 @@ const notes = [
   }
 ]
 
-const rivit = notes.map(note => <Text key={note.id}>Note {note.id}</Text>)
-const Input = () => {
-  return (
-    <View>
-        <TextInput placeholder='Write the note here'/>
+class NoteList extends React.Component {
+  state = {
+    loading: true,
+    error: false,
+    notes: notes,
+    newNote: ''
+  }
+  handleNoteChange = (e) => {
+    console.log(e)
+    this.setState({newNote: e})
+  }
+  addNote = (e) => {
+    e.preventDefault()
+    const noteObject = {
+      content: this.state.newNote,
+      date: new Date(),
+      important: Math.random() > 0.5,
+      id: this.state.notes.length + 1
+    }
+    const notes = this.state.notes.concat(noteObject)
+
+    this.setState({
+      notes: notes,
+      newNote: ''
+    })
+  }
+  render(){
+    
+    return (
+      <View>
+        {this.state.notes.map(note => <Text key={note.id}>Note {note.id}</Text>)}
+        <TextInput 
+          placeholder='Write the note here'
+          defaultValue={this.state.newNote}
+          onChangeText={this.handleNoteChange}
+        />
         <Button 
           title='ADD NOTE' 
-          onPress={() => alert('Nothing implemented yet!')} 
+          onPress={this.addNote} 
         />
-    </View>
-  )
+      </View>
+    )
+  }
 }
+
 const App = () => {
-  console.log(rivit)
+  
   return (
     <SafeAreaView style={styles.container}>
-      <View>{
-        rivit}
-      </View>
-      <View>
-        <Input />
-      </View>   
+      <NoteList />   
     </SafeAreaView>
   );
 }
