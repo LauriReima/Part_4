@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
 
-import { Text, View, TextInput, Button, ScrollView, TouchableOpacity } from "react-native";
+import { Text, View, TextInput, Button, ScrollView, TouchableOpacity, Alert } from "react-native";
 import styles from "./Styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -45,12 +45,15 @@ class NoteList extends React.Component {
       important: Math.random() > 0.5,
       id: this.state.notes.length + 1,
     };
+    const sameNote = this.state.notes.map(n => n.content).includes(noteObject.content)
+    
     const notes = this.state.notes.concat(noteObject);
-
-    this.setState({
-      notes: notes,
-      newNote: "",
-    });
+    {!sameNote ? 
+      this.setState({
+        notes: notes,
+        newNote: "",
+    }) : Alert.alert('Note allready exists')}
+    
   };
   
   render() {
