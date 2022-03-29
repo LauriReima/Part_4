@@ -52,30 +52,49 @@ class NoteList extends React.Component {
       newNote: "",
     });
   };
+  
   render() {
     return (
-      <View>
-        <ScrollView>
+      <View >
+        <ScrollView >
           {this.state.notes.map((note) => (
             <Text key={note.id}>Note {note.id}</Text>
           ))}
         </ScrollView>
-        <TextInput
-            placeholder="Write the note here"
-            defaultValue={this.state.newNote}
-            onChangeText={this.handleNoteChange}
-          />
-        <Button title="ADD NOTE" onPress={this.addNote} />
+        <Input 
+          tyyli={styles.button}
+          kirjoitus={this.handleNoteChange}
+          arvo={this.state.newNote}
+          paino={this.addNote}
+        />
       </View>
     );
   }
 }
+const Input = ({kirjoitus,arvo, paino, tyyli}) =>{
+  return(
+    <View>
+      <TextInput
+            placeholder="Write the note here"
+            defaultValue={arvo}
+            onChangeText={kirjoitus}
+          />
+        <Button 
+          title="ADD NOTE" 
+          onPress={paino}
+          style={tyyli}
+           />
+    </View>
+  )}
 
 const App = () => {
   return (
-    <SafeAreaView style={styles.container}>
-      <NoteList />
-    </SafeAreaView>
+      <View style={styles.container}>
+        <NoteList />
+      </View>
+      
+      
+    
   );
 };
 

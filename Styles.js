@@ -6,11 +6,14 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: '#fff',
       alignItems: 'center',
-      justifyContent: 'center'
+      //justifyContent: 'space-around',
+      marginTop: 50,
+      marginBottom: 20 
     },
     button: {
-      backgroundColor: 'blue',
-      color: 'white',
+      flex:1,
+      //backgroundColor: 'white',
+      color: 'black',
     }
   });
 
