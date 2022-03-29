@@ -1,7 +1,7 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
 
-import { Text, View, TextInput, Button, ScrollView } from "react-native";
+import { Text, View, TextInput, Button, ScrollView, TouchableOpacity } from "react-native";
 import styles from "./Styles";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -58,11 +58,15 @@ class NoteList extends React.Component {
       <View >
         <ScrollView >
           {this.state.notes.map((note) => (
-            <Text key={note.id}>Note {note.id}</Text>
+            <Text 
+              key={note.id} 
+              style={styles.text}
+              >
+                 {note.content}
+            </Text>
           ))}
         </ScrollView>
         <Input 
-          tyyli={styles.button}
           kirjoitus={this.handleNoteChange}
           arvo={this.state.newNote}
           paino={this.addNote}
@@ -71,19 +75,21 @@ class NoteList extends React.Component {
     );
   }
 }
-const Input = ({kirjoitus,arvo, paino, tyyli}) =>{
+const Input = ({kirjoitus,arvo, paino}) =>{
   return(
     <View>
       <TextInput
+            style={styles.input}
             placeholder="Write the note here"
             defaultValue={arvo}
             onChangeText={kirjoitus}
           />
-        <Button 
-          title="ADD NOTE" 
+        <TouchableOpacity 
+          style={styles.button} 
           onPress={paino}
-          style={tyyli}
-           />
+          >
+            <Text style={{textAlign: 'center', fontSize: 30}}>ADD NOTE</Text>
+        </TouchableOpacity>
     </View>
   )}
 
