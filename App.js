@@ -1,9 +1,17 @@
 import * as React from "react";
 import { StatusBar } from "expo-status-bar";
-
-import { Text, View, TextInput, Button, ScrollView, TouchableOpacity, Alert } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  ScrollView,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import styles from "./Styles";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 let notes = [
   {
@@ -45,31 +53,30 @@ class NoteList extends React.Component {
       important: Math.random() > 0.5,
       id: this.state.notes.length + 1,
     };
-    const sameNote = this.state.notes.map(n => n.content).includes(noteObject.content)
+    const sameNote = this.state.notes
+      .map((n) => n.content)
+      .includes(noteObject.content);
     
     const notes = this.state.notes.concat(noteObject);
-    {!sameNote ? 
-      this.setState({
-        notes: notes,
-        newNote: "",
-    }) : Alert.alert('Note allready exists')}
-    
+    {
+      !sameNote
+        ? this.setState({
+            notes: notes,
+            newNote: "",
+          })
+        : Alert.alert("Note allready exists");
+    }
   };
-  
   render() {
+    
     return (
-      <View >
-        <ScrollView >
-          {this.state.notes.map((note) => (
-            <Text 
-              key={note.id} 
-              style={styles.text}
-              >
-                 {note.content}
-            </Text>
-          ))}
-        </ScrollView>
-        <Input 
+      <View style={styles.container}>
+        <Notes
+          notes={this.state.notes}
+          // style={styles.text}
+        />
+        <Button title='Add note' style={{position: 'asbsolute'}} onPress={() => this.props.navigation.navigate('Add note')} />
+        <Input
           kirjoitus={this.handleNoteChange}
           arvo={this.state.newNote}
           paino={this.addNote}
@@ -78,32 +85,44 @@ class NoteList extends React.Component {
     );
   }
 }
-const Input = ({kirjoitus,arvo, paino}) =>{
-  return(
+const lisa = new NoteList().addNote
+const Notes = ({ notes }) => {
+  
+  return (
+    <ScrollView >
+      {notes.map((n) => (
+        <Text key={n.id} style={styles.text}>{n.content}</Text>
+      ))}
+    </ScrollView>
+  );
+};
+const Input = ({ kirjoitus, arvo, paino }) => {
+  console.log('lisätty')
+  return (
     <View>
       <TextInput
-            style={styles.input}
-            placeholder="Write the note here"
-            defaultValue={arvo}
-            onChangeText={kirjoitus}
-          />
-        <TouchableOpacity 
-          style={styles.button} 
-          onPress={paino}
-          >
-            <Text style={{textAlign: 'center', fontSize: 30}}>ADD NOTE</Text>
-        </TouchableOpacity>
+        style={styles.input}
+        placeholder="Write the note here"
+        defaultValue={arvo}
+        onChangeText={kirjoitus}
+      />
+      <TouchableOpacity style={styles.button} onPress={paino}>
+        <Text style={{ textAlign: "center", fontSize: 30 }}>ADD NOTE</Text>
+      </TouchableOpacity>
     </View>
-  )}
+  );
+};
+const Stack = createNativeStackNavigator();
 
 const App = () => {
+  
   return (
-      <View style={styles.container}>
-        <NoteList />
-      </View>
-      
-      
-    
+    <NavigationContainer >
+      <Stack.Navigator >
+        <Stack.Screen name="Notes" component={NoteList} />
+        <Stack.Screen name='Add note' component={Input}/> 
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 

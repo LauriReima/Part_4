@@ -7,8 +7,8 @@ const styles = StyleSheet.create({
       backgroundColor: '#b3d9ff',
       alignItems: 'center',
       justifyContent: 'space-around',
-      padding: 50
-    
+      padding: 50,
+      height: '100%'
     },
     text: {
       fontSize: 19,
