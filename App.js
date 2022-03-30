@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+ 
 } from "react-native";
 import styles from "./Styles";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -75,7 +76,7 @@ class NoteList extends React.Component {
         <Notes
           notes={this.state.notes}
         />
-        <Button title='Add note'  onPress={(e) => this.navigation.navigate('Add note')} />
+        <Button title='Add note'  onPress={() => this.props.navigation.navigate('Add note')} />
         <Input
           kirjoitus={this.handleNoteChange}
           arvo={this.state.newNote}
@@ -116,6 +117,7 @@ const Input = ( {arvo, kirjoitus, paino} ) => {
   );
 };
 const Stack = createNativeStackNavigator();
+
 
 const App = () => {
   
