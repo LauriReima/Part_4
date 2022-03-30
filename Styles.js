@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       backgroundColor: '#b3d9ff',
       alignItems: 'center',
-      justifyContent: 'space-around',
+      //justifyContent: 'space-around',
       padding: 50,
       height: '100%'
     },
@@ -18,6 +18,8 @@ const styles = StyleSheet.create({
       backgroundColor: '#f2f2f2',
       height: 40,
       borderRadius: 5,
+      width: '79%',
+      margin: 14
     },
     button: {
       backgroundColor: '#00aeef',

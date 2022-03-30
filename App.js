@@ -66,6 +66,7 @@ class NoteList extends React.Component {
           })
         : Alert.alert("Note allready exists");
     }
+    console.log('lisätty')
   };
   render() {
     
@@ -73,9 +74,8 @@ class NoteList extends React.Component {
       <View style={styles.container}>
         <Notes
           notes={this.state.notes}
-          // style={styles.text}
         />
-        <Button title='Add note' style={{position: 'asbsolute'}} onPress={() => this.props.navigation.navigate('Add note')} />
+        
         <Input
           kirjoitus={this.handleNoteChange}
           arvo={this.state.newNote}
@@ -85,28 +85,31 @@ class NoteList extends React.Component {
     );
   }
 }
-const lisa = new NoteList().addNote
-const Notes = ({ notes }) => {
+
+const Notes = ( props ) => {
   
   return (
+    <View style={styles.container}>
     <ScrollView >
       {notes.map((n) => (
         <Text key={n.id} style={styles.text}>{n.content}</Text>
       ))}
     </ScrollView>
+    <Button title='Add note' style={{position: 'asbsolute'}} onPress={(e) => props.navigation.navigate('Add note')} />
+    </View>
   );
 };
-const Input = ({ kirjoitus, arvo, paino }) => {
-  console.log('lisätty')
+const Input = (props) => {
+  
   return (
-    <View>
+    <View style={styles.container}>
       <TextInput
         style={styles.input}
         placeholder="Write the note here"
-        defaultValue={arvo}
-        onChangeText={kirjoitus}
+        defaultValue={props.arvo}
+        onChangeText={props.kirjoitus}
       />
-      <TouchableOpacity style={styles.button} onPress={paino}>
+      <TouchableOpacity style={styles.button} onPress={props.paino}>
         <Text style={{ textAlign: "center", fontSize: 30 }}>ADD NOTE</Text>
       </TouchableOpacity>
     </View>
@@ -119,7 +122,7 @@ const App = () => {
   return (
     <NavigationContainer >
       <Stack.Navigator >
-        <Stack.Screen name="Notes" component={NoteList} />
+        <Stack.Screen name="Notes" component={Notes} />
         <Stack.Screen name='Add note' component={Input}/> 
       </Stack.Navigator>
     </NavigationContainer>
