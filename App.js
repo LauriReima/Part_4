@@ -75,7 +75,7 @@ class NoteList extends React.Component {
         <Notes
           notes={this.state.notes}
         />
-        
+        <Button title='Add note'  onPress={(e) => this.navigation.navigate('Add note')} />
         <Input
           kirjoitus={this.handleNoteChange}
           arvo={this.state.newNote}
@@ -86,8 +86,8 @@ class NoteList extends React.Component {
   }
 }
 
-const Notes = ( props ) => {
-  
+const Notes = ( {notes} ) => {
+  console.log(notes)
   return (
     <View style={styles.container}>
     <ScrollView >
@@ -95,21 +95,21 @@ const Notes = ( props ) => {
         <Text key={n.id} style={styles.text}>{n.content}</Text>
       ))}
     </ScrollView>
-    <Button title='Add note' style={{position: 'asbsolute'}} onPress={(e) => props.navigation.navigate('Add note')} />
+    
     </View>
   );
 };
-const Input = (props) => {
+const Input = ( {arvo, kirjoitus, paino} ) => {
   
   return (
-    <View style={styles.container}>
+    <View >
       <TextInput
         style={styles.input}
         placeholder="Write the note here"
-        defaultValue={props.arvo}
-        onChangeText={props.kirjoitus}
+        defaultValue={arvo}
+        onChangeText={kirjoitus}
       />
-      <TouchableOpacity style={styles.button} onPress={props.paino}>
+      <TouchableOpacity style={styles.button} onPress={paino}>
         <Text style={{ textAlign: "center", fontSize: 30 }}>ADD NOTE</Text>
       </TouchableOpacity>
     </View>
@@ -122,7 +122,7 @@ const App = () => {
   return (
     <NavigationContainer >
       <Stack.Navigator >
-        <Stack.Screen name="Notes" component={Notes} />
+        <Stack.Screen name="Notes" component={NoteList} />
         <Stack.Screen name='Add note' component={Input}/> 
       </Stack.Navigator>
     </NavigationContainer>
