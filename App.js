@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -35,6 +36,7 @@ let notes = [
   },
 ];
 
+
 class NoteList extends React.Component {
   state = {
     loading: true,
@@ -42,8 +44,7 @@ class NoteList extends React.Component {
     notes: notes,
     newNote: "",
   };
-  handleNoteChange = (e) => {
-    console.log(e);
+  handleNoteChange = (e) => { 
     this.setState({ newNote: e });
   };
   addNote = (e) => {
@@ -68,27 +69,40 @@ class NoteList extends React.Component {
         : Alert.alert("Note allready exists");
     }
     console.log('lisätty')
-  };
+  }
   render() {
     
-    return (
-      <View style={styles.container}>
-        <Notes
-          notes={this.state.notes}
-        />
-        <Button title='Add note'  onPress={() => this.props.navigation.navigate('Add note')} />
-        <Input
-          kirjoitus={this.handleNoteChange}
-          arvo={this.state.newNote}
-          paino={this.addNote}
-        />
-      </View>
+    return (  
+        
+        <View style={styles.container}>
+
+         <Input
+            kirjoitus={this.handleNoteChange}
+            arvo={this.state.newNote}
+            paino={this.addNote}
+          /> 
+        </View> 
     );
   }
 }
-
+class List extends React.Component{
+ 
+  state ={
+    notes: notes
+  }
+  render (){
+    return (
+      <View style={styles.container}>
+        <Notes
+            notes={this.state.notes}
+          />
+          <Button title='Add notes'  onPress={() => this.props.navigation.navigate('input')} />
+      </View>
+    )
+  }
+}
 const Notes = ( {notes} ) => {
-  console.log(notes)
+
   return (
     <View style={styles.container}>
     <ScrollView >
@@ -120,14 +134,17 @@ const Stack = createNativeStackNavigator();
 
 
 const App = () => {
-  
+ 
+
   return (
+    
     <NavigationContainer >
       <Stack.Navigator >
-        <Stack.Screen name="Notes" component={NoteList} />
-        <Stack.Screen name='Add note' component={Input}/> 
+        <Stack.Screen name='notes' component={List} options={{title:'Notes'}}/> 
+        <Stack.Screen name="input" component={NoteList} options={{title:'Input'}}/> 
       </Stack.Navigator>
     </NavigationContainer>
+    
   );
 };
 
