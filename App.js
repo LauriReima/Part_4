@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import {
@@ -58,7 +58,7 @@ class NoteList extends React.Component {
     const sameNote = this.state.notes
       .map((n) => n.content)
       .includes(noteObject.content);
-    
+
     const notes = this.state.notes.concat(noteObject);
     {
       !sameNote
@@ -68,54 +68,52 @@ class NoteList extends React.Component {
           })
         : Alert.alert("Note allready exists");
     }
-    console.log('lisätty')
-  }
+    console.log("lisätty");
+  };
   render() {
-    
-    return (  
-        
-        <View style={styles.container}>
-
-         <Input
-            kirjoitus={this.handleNoteChange}
-            arvo={this.state.newNote}
-            paino={this.addNote}
-          /> 
-        </View> 
+    return (
+      <View style={styles.container}>
+        <Input
+          kirjoitus={this.handleNoteChange}
+          arvo={this.state.newNote}
+          paino={this.addNote}
+        />
+      </View>
     );
   }
 }
-class List extends React.Component{
- 
-  state ={
-    notes: notes
-  }
-  render (){
+class List extends React.Component {
+  state = {
+    notes: notes,
+  };
+  
+  render() {
+    
     return (
       <View style={styles.container}>
-        <Notes
-            notes={this.state.notes}
-          />
-          <Button title='Add notes'  onPress={() => this.props.navigation.navigate('input')} />
+        <Notes notes={this.state.notes} />
+        <Button
+          title="Add notes"
+          onPress={() => this.props.navigation.navigate("input")}
+        />
       </View>
-    )
+    );
   }
 }
-const Notes = ( {notes} ) => {
-
+const Notes = ({ notes }) => {
   return (
     <View style={styles.container}>
-    <ScrollView >
-      {notes.map((n) => (
-        <Text key={n.id} style={styles.text}>{n.content}</Text>
-      ))}
-    </ScrollView>
-    
+      <ScrollView>
+        {notes.map((n) => (
+          <Text key={n.id} style={styles.text}>
+            {n.content}
+          </Text>
+        ))}
+      </ScrollView>
     </View>
   );
 };
-const Input = ( {arvo, kirjoitus, paino} ) => {
-  
+const Input = ({ arvo, kirjoitus, paino }) => {
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -132,19 +130,22 @@ const Input = ( {arvo, kirjoitus, paino} ) => {
 };
 const Stack = createNativeStackNavigator();
 
-
 const App = () => {
- 
-
   return (
-    
-    <NavigationContainer >
-      <Stack.Navigator >
-        <Stack.Screen name='notes' component={List} options={{title:'Notes'}}/> 
-        <Stack.Screen name="input" component={NoteList} options={{title:'Input'}}/> 
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="notes"
+          component={List}
+          options={{ title: "Notes" }}
+        />
+        <Stack.Screen
+          name="input"
+          component={NoteList}
+          options={{ title: "Input" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-    
   );
 };
 
