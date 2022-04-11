@@ -103,7 +103,7 @@ const Notes = ( {notes} ) => {
 const Input = ( {arvo, kirjoitus, paino} ) => {
   
   return (
-    <View >
+    <View style={styles.inputContainer}>
       <TextInput
         style={styles.input}
         placeholder="Write the note here"

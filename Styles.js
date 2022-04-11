@@ -27,7 +27,12 @@ const styles = StyleSheet.create({
     button: {
       backgroundColor: '#00aeef',
       borderRadius: 5,
-      height:45       
+      height:45,
+         
+   },
+   inputContainer: {
+     width: '100%',
+     alignItems:'center'
    }
   });
 
