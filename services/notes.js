@@ -17,3 +17,4 @@ const setData = async (note) => {
         console.log(e)
     }
 }
+export default { getData, setData } 

@@ -10,10 +10,11 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
- 
+  ActivityIndicator
 } from "react-native";
 import styles from "./Styles";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import noteService from './services/notes'
 
 let notes = [
   {
@@ -41,9 +42,12 @@ class NoteList extends React.Component {
   state = {
     loading: true,
     error: false,
-    notes: notes,
+    notes: [],
     newNote: "",
   };
+  constructor(props) {
+    super(props)
+  }
   handleNoteChange = (e) => { 
     this.setState({ newNote: e });
   };
@@ -68,15 +72,38 @@ class NoteList extends React.Component {
           })
         : Alert.alert("Note allready exists");
     }
-    console.log("lisätty");
+    
   };
+  save = async () => {
+    try {
+      let nootit = await AsyncStorage.setItem('Nootit')
+      if (nootit !== null) {
+        this.setState({
+          notes: nootit
+        })
+      }
+    } catch(err){
+      console.log(err)
+    }
+  }
+  load = async () => {
+    try {
+      await AsyncStorage.getItem('Nootit', this.state.notes)
+    } catch(err){
+      console.log(err)
+    }
+  }
+  
   render() {
+    
     return (
       <View style={styles.container}>
+        <Notes notes={this.state.notes} />
         <Input
           kirjoitus={this.handleNoteChange}
           arvo={this.state.newNote}
           paino={this.addNote}
+          tallennus={this.save}
         />
       </View>
     );
@@ -84,10 +111,19 @@ class NoteList extends React.Component {
 }
 class List extends React.Component {
   state = {
+    loading: true,
     notes: notes,
   };
+ 
   
   render() {
+    // if (this.state.loading) {
+    //   return (
+    //     <View>
+    //       <ActivityIndicator animating={true}/>
+    //     </View>
+    //   )
+    // }
     
     return (
       <View style={styles.container}>
@@ -113,7 +149,7 @@ const Notes = ({ notes }) => {
     </View>
   );
 };
-const Input = ({ arvo, kirjoitus, paino }) => {
+const Input = ({ arvo, kirjoitus, paino, tallennus }) => {
   return (
     <View style={styles.inputContainer}>
       <TextInput
@@ -122,6 +158,9 @@ const Input = ({ arvo, kirjoitus, paino }) => {
         defaultValue={arvo}
         onChangeText={kirjoitus}
       />
+      <TouchableOpacity onPress={tallennus}>
+        <Text>Save the list</Text>
+      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={paino}>
         <Text style={{ textAlign: "center", fontSize: 30 }}>ADD NOTE</Text>
       </TouchableOpacity>
@@ -134,11 +173,11 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="notes"
           component={List}
           options={{ title: "Notes" }}
-        />
+        /> */}
         <Stack.Screen
           name="input"
           component={NoteList}
